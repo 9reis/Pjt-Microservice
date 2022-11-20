@@ -2,7 +2,7 @@ spring:
   application:
     name: mscartoes
     
-sertver:  
+server:  
   port: 0
   
 eureka:
