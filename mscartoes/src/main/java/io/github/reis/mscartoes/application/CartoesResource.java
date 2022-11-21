@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.reis.mscartoes.application.representation.CartaoSaveRequest;
-import io.github.reis.mscartoes.application.representation.CartoesPorCLienteResponse;
 import io.github.reis.mscartoes.application.representation.CartoesPorClienteResponse;
 import io.github.reis.mscartoes.domain.Cartao;
 import io.github.reis.mscartoes.domain.ClienteCartao;
