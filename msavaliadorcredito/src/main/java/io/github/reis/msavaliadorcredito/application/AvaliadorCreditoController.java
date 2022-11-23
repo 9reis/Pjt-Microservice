@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.reis.msavaliadorcredito.application.ex.DadosClienteNotFoundException;
 import io.github.reis.msavaliadorcredito.application.ex.ErroComunicacaoMicroservicesException;
+import io.github.reis.msavaliadorcredito.application.ex.ErroSolicitacaoCartaoException;
 import io.github.reis.msavaliadorcredito.domain.model.DadosAvaliacao;
+import io.github.reis.msavaliadorcredito.domain.model.DadosSolicitacaoEmissaoCartao;
+import io.github.reis.msavaliadorcredito.domain.model.ProtocoloSolicitacaoCartao;
 import io.github.reis.msavaliadorcredito.domain.model.RetornoAvaliacaoCliente;
 import io.github.reis.msavaliadorcredito.domain.model.SituacaoCliente;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +32,7 @@ public class AvaliadorCreditoController {
 	}
 	
 	@GetMapping(value = "situacao-cliente", params = "cpf")
-	public ResponseEntity consultaSituacaoCliente(@RequestParam("cpf") String cpf){
+	public ResponseEntity consultarSituacaoCliente(@RequestParam("cpf") String cpf){
 		try {
 			SituacaoCliente situacaoCliente = avaliadorCreditoService.obterSituacaoCliente(cpf);
 			return ResponseEntity.ok(situacaoCliente);
@@ -49,6 +52,17 @@ public class AvaliadorCreditoController {
 			return ResponseEntity.notFound().build();
 		} catch (ErroComunicacaoMicroservicesException e) {
 			return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+		}
+	}
+	
+	@PostMapping("solicitacoes-cartao")
+	public ResponseEntity solicitarCartao(@RequestBody DadosSolicitacaoEmissaoCartao dados) {
+		try {
+			ProtocoloSolicitacaoCartao protocoloSolicitacaoCartao = avaliadorCreditoService.
+					solicitarEnissaoCartao(dados);
+			return ResponseEntity.ok(protocoloSolicitacaoCartao);
+		}catch(ErroSolicitacaoCartaoException e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
 		}
 	}
 }
